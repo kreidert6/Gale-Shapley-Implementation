@@ -38,6 +38,7 @@ class Queue:
 
 
 class LinkedListNode:
+    #might not need num spots
     def __init__(self, queue,spots):
         self.queue = queue
         self.num_spots = spots
@@ -72,10 +73,12 @@ def gale_shapley(filename):
     num_students = num_hospital_and_students[1]
 
     line2= file.readline().split
-
+    num_spots = {}
+    #line 2 holds number of spots each hospital has
+    #add each to num_spots dictonary
     for i in range(len(line2)-1):
-        pass
-
+        num_spots[i] = line2[i]
+    
 
     while():
 
