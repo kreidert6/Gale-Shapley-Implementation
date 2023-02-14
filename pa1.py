@@ -133,10 +133,11 @@ def loadStudentPreferences(file,num_students):
     """
 
     student_preferences = {}
-    for i in range(num_students):
+    for student_num in range(num_students):
         next_line = file.readline().split()  
-        ranking = i+1
-        #i+1 because i starts at 0 but we want ranking to start at 1
-        for item in next_line:
-            student_preferences[i][item] = ranking
+        #start ranking at 1 and add one per iteration in below loop
+        ranking=1
+        for hospital_num in next_line:
+            student_preferences[student_num][hospital_num] = ranking
+            ranking+=1
     return student_preferences
