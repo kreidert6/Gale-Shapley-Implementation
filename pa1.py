@@ -88,6 +88,7 @@ def gale_shapley(filename):
     
     #PART 3
     #creates a dictionary for hostpital preferences 
+    #could do a queue cuz its first in first out and load preferences and dequeue them when they propose
     #Ex: {"hospital_0" : [0,2,1], "hospital_1" : [2,1,0]}
     hospital_prefs = {}
     iteration = 0
