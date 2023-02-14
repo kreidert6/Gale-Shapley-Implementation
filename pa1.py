@@ -100,7 +100,6 @@ def gale_shapley(filename):
         hospital_prefs["hospital_" + i] = pref_list
 
     #PART 4
-    #Tyler- we could use the function below I modified from this if you think it'll work
     #creates a dictionary for student preferences 
     #Ex: {"student_0" : [0,2,1], "student_1" : [2,1,0]}
     student_prefs = {}
@@ -115,7 +114,9 @@ def gale_shapley(filename):
 
     
 
-        #create a queue for each hospital's preferences
+    #Part 4 idea 2
+    #Tyler- we could use the function below I modified from this if you think it'll work
+    student_prefs_2 = loadStudentPreferences(file,num_students)
     
 
    
