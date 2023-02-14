@@ -100,6 +100,7 @@ def gale_shapley(filename):
         hospital_prefs["hospital_" + i] = pref_list
 
     #PART 4
+    #Tyler- we could use the function below I modified from this if you think it'll work
     #creates a dictionary for student preferences 
     #Ex: {"student_0" : [0,2,1], "student_1" : [2,1,0]}
     student_prefs = {}
@@ -113,34 +114,27 @@ def gale_shapley(filename):
         student_prefs["student_" + i] = pref_list
 
     
-        
-
-
-
-
-
-        
-
-        
-
 
         #create a queue for each hospital's preferences
     
 
-    line2= file.readline().split
-    num_spots = {}
-    #line 2 holds number of spots each hospital has
-    #add each to num_spots dictonary
-    for i in range(len(line2)-1):
-        num_spots[i] = line2[i]
-
-    #student_preferences = loadPreferences(file)
-
-    file.close()
-
-    while():
-
-    
-        pass
+   
 
 
+def loadStudentPreferences(file,num_students):
+    """
+    This function takes the file and num_student in as a paramter
+    and then loads each students preference into
+    a dictonary of dictionaries. The keys are
+    student_num and the vals are a dictonary in which
+    the keys are the hospitals num and it's ranking
+    """
+
+    student_preferences = {}
+    for i in range(num_students):
+        next_line = file.readline().split()  
+        ranking = i+1
+        #i+1 because i starts at 0 but we want ranking to start at 1
+        for item in next_line:
+            student_preferences[i][item] = ranking
+    return student_preferences
