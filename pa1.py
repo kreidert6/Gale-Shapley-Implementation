@@ -62,6 +62,7 @@ def gale_shapley(filename):
     Returns a list containing hospitals assigned to each 
     student, or None if a student is not assigned to a hospital.
     """
+    #PART 1
     #could do linked list for hospitals unmatched
     #queue for each hospitals preference lists?
     #when queue 
@@ -71,6 +72,65 @@ def gale_shapley(filename):
     num_hospital_and_students = line1.split()
     num_hospitals = num_hospital_and_students[0] 
     num_students = num_hospital_and_students[1]
+
+
+    #PART 2
+    #grab the positions for each hospital and throw them in a dict 
+    line2 = file.readline().split()
+    
+    hospital_positions = {}
+    for i in range(num_hospitals):
+        hospital_positions["num_positions_" + i] = line2[i]
+
+  
+
+
+    
+    #PART 3
+    #creates a dictionary for hostpital preferences 
+    #Ex: {"hospital_0" : [0,2,1], "hospital_1" : [2,1,0]}
+    hospital_prefs = {}
+    iteration = 0
+    for i in range(num_hospitals):
+        next_line = file.readline().split()
+        pref_list = []
+        for item in next_line:
+            pref_list.append[item]
+
+        hospital_prefs["hospital_" + i] = pref_list
+
+    #PART 4
+    #creates a dictionary for student preferences 
+    #Ex: {"student_0" : [0,2,1], "student_1" : [2,1,0]}
+    student_prefs = {}
+    iteration = 0
+    for i in range(num_students):
+        next_line = file.readline().split()
+        pref_list = []
+        for item in next_line:
+            pref_list.append[item]
+
+        student_prefs["student_" + i] = pref_list
+
+    
+        
+
+
+
+
+
+        
+
+        
+
+
+        #create a queue for each hospital's preferences
+        
+
+    
+
+
+    
 
     line2= file.readline().split
     num_spots = {}
