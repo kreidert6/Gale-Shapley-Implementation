@@ -125,11 +125,6 @@ def gale_shapley(filename):
 
 
         #create a queue for each hospital's preferences
-        
-
-    
-
-
     
 
     line2= file.readline().split
@@ -139,7 +134,7 @@ def gale_shapley(filename):
     for i in range(len(line2)-1):
         num_spots[i] = line2[i]
 
-    student_preferences = loadPreferences(file)
+    #student_preferences = loadPreferences(file)
 
     file.close()
 
@@ -148,24 +143,4 @@ def gale_shapley(filename):
     
         pass
 
-def loadPreferences(file):
-    """
-    This function takes the file in as a paramter
-    and then loads each students preference into
-    a dictonary of dictionaries. The keys are
-    student_num and the vals are a dictonary in which
-    the keys are the hospitals num and it's ranking
-    """
-    line = file.readline()
-    student_num = 0
-    student_preferences = {}
-    while(line):
-        line.split()
-        i=1
-        for item in line:
-            student_preferences[student_num][item] = i
-            i+=1
-        line = file.readline()
-        student_num+=1
-    return student_preferences
 
