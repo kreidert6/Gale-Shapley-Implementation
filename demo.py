@@ -127,7 +127,7 @@ def gale_shapley(filename):
     #Part 4 idea 2
     #Tyler- we could use the function below I modified from this if you think it'll work
     student_prefs_2 = loadStudentPreferences(file,num_students)
-    print(student_prefs_2)
+    
 
 
 
@@ -140,37 +140,41 @@ def gale_shapley(filename):
     i = 0
     while "" in matches.values():
         student = hospital_prefs[i].pop()
+
         if matches[i] == "":
 
             #grab the hospitals next preference
             
-
+            
             #checks if s is unmatched
             if student not in matches.values():
                 matches[i] = student
                 i += 1
             
             #checks if s prefers h to current partner h'
-            elif student_prefs_2[student][i] < student_prefs_2[student][matches.get(student)]:
-                matches[matches.get(student)] = ""
+         
+            elif student_prefs_2[student][i] < student_prefs_2[student][list(matches.keys())[list(matches.values()).index(student)]]:
+                booted_hosp = list(matches.keys())[list(matches.values()).index(student)]
+                matches[booted_hosp] = ""
                 matches[i] = student
-                i = matches.get(student)
-                
+                i = booted_hosp
             
             #student rejects
-            else: 
+            # creating a new dictionary
 
-                i += 1
+
+
+
+
+
+
+                
         
         else:
             i += 1
         
      
     print(matches)
-
-
-
-        
 
    
 
@@ -189,7 +193,16 @@ def loadStudentPreferences(file,num_students):
         next_line = file.readline().split()  
         #start ranking at 1 and add one per iteration in below loop
         ranking=1
+        student_preferences[student_num] = {}
         for hospital_num in next_line:
+            hospital_num = int(hospital_num)
+            
+            
             student_preferences[student_num][hospital_num] = ranking
             ranking+=1
+    
+ 
     return student_preferences
+
+
+gale_shapley("input2.txt")
