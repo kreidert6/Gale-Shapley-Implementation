@@ -3,36 +3,41 @@
 # Date:
 # Description:
 
-class QueueNode:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
 class Queue:
+    class Node:
+        def __init__(self, value, next=None):
+            self.value = value
+            self.next = next
+
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.front = None
+        self.rear = None
 
-    def is_empty(self):
-        return self.head is None
-
-    def enqueue(self, data):
-        new_node = QueueNode(data)
-        if self.tail is None:
-            self.head = new_node
-            self.tail = new_node
-            return
-        self.tail.next = new_node
-        self.tail = new_node
+    def enqueue(self, value):
+        new_node = self.Node(value)
+        if self.rear is None:
+            self.front = new_node
+        else:
+            self.rear.next = new_node
+        self.rear = new_node
 
     def dequeue(self):
-        if self.is_empty():
+        if self.front is None:
             return None
-        current_head = self.head
-        self.head = self.head.next
-        if self.head is None:
-            self.tail = None
-        return current_head.data
+        else:
+            value = self.front.value
+            self.front = self.front.next
+            if self.front is None:
+                self.rear = None
+            return value
+        
+    def isEmpty(self):
+        if self.front is None:
+            return True
+        else:
+            return False
+
+
 
 
 
@@ -92,7 +97,6 @@ def gale_shapley(filename):
     #Ex: {"hospital_0" : [0,2,1], "hospital_1" : [2,1,0]}
 
     hospital_prefs = {}
-    iteration = 0
 
     result = []
     for i in range(num_hospitals):
@@ -131,12 +135,70 @@ def gale_shapley(filename):
 
 
 
+
+        
+
+    propose_order = loadProposalOrder(num_hospitals)
+    
+    matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order)
+    #print_list = []
+    # for i in range(num_hospitals):
+    #     print(print_list.append(matches[i]))
+    # print(print_list)
+    print(matches)
+
+
+def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
+    #propose order is queue
+    #hostpital_prefs is dictonary of lists
+    #student_prefs is dictonary of dictonaries
+    #matching alg
+    matches = {}
+
+    #determines the current hospital proposing
+    #idea use a queue to keep track of hospitals who are proposing
+    while (not propose_order.isEmpty()):
+        hospital_num = propose_order.dequeue()
+
+        student = hospital_prefs[hospital_num].pop()
+
+        #grab the hospitals next preference
+        
+        
+        #checks if s is unmatched
+        if student not in matches.values():
+            matches[hospital_num] = student
+        
+        #checks if s prefers h to current partner h'
+        
+        elif student_prefs_2[student][hospital_num] < student_prefs_2[student][list(matches.keys())[list(matches.values()).index(student)]]:
+            booted_hosp = list(matches.keys())[list(matches.values()).index(student)]
+            propose_order.enqueue(booted_hosp)
+            del matches[booted_hosp]
+            matches[hospital_num] = student
+        else:
+            propose_order.enqueue(hospital_num)
+        
+        #student rejects
+        # creating a new dictionary
+
+    return matches
+
+def loadProposalOrder(numHospitals):
+    proposal_order = Queue()
+    for hosp_num in range(numHospitals):
+        proposal_order.enqueue(hosp_num)
+    return proposal_order
+
+
+def getMatchesMach1(hospital_prefs, student_prefs_2):
     #matching alg
     matches = {}
     for key in hospital_prefs:
         matches[key] = ""
 
     #determines the current hospital proposing
+
     i = 0
     while "" in matches.values():
         student = hospital_prefs[i].pop()
@@ -162,22 +224,9 @@ def gale_shapley(filename):
             #student rejects
             # creating a new dictionary
 
-
-
-
-
-
-
-                
-        
         else:
             i += 1
-        
-     
-    print(matches)
-
-   
-
+    return matches
 
 def loadStudentPreferences(file,num_students):
     """
