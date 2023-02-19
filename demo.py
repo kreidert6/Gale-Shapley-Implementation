@@ -143,7 +143,7 @@ def gale_shapley(filename):
     
     matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order,hospital_positions)
     #print(matches)
-    return_list = convertDictToList(matches)
+    return_list = convertDictToList(matches,num_students)
     #print(return_list)
     return return_list
 
@@ -273,27 +273,28 @@ def loadStudentPreferences(file,num_students, num_hospitals):
  
     return student_preferences
 
-def convertDictToList(matches):
+def convertDictToList(matches,num_students):
     return_list = []
     # for i in range(num_hospitals):
     #     print(print_list.append(matches[i]))
     # print(print_list)
-    for i in range(len(matches)):
-        # if(i not in matches):
-        #     return_list.append(None)
-        # else:
-        #     return_list.append(matches[i])
-        return_list.append(matches[i])
+    # for i in range(len(matches)):
+    for i in range(num_students):
+        if(i not in matches):
+            return_list.append("None")
+        else:
+            return_list.append(str(matches[i]))
+        #return_list.append(matches[i])
     return return_list
 
 
 
-my_list = gale_shapley("input9.txt")
-file = open("solution9.txt", 'r')
-solution_list_string = file.readline().split()
+my_list = gale_shapley("input17.txt")
+file = open("solution17.txt", 'r')
+solution_list = file.readline().split()
 
 print(my_list)
-solution_list = [int(i) for i in solution_list_string]
+#solution_list = [int(i) for i in solution_list_string]
 print(solution_list)
 if(my_list==solution_list):
     print("The lists are equal")
