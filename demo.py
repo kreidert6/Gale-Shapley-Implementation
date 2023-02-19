@@ -39,9 +39,6 @@ class Queue:
 
 
 
-
-
-
 class LinkedListNode:
     #might not need num spots
     def __init__(self, queue,spots):
@@ -96,6 +93,8 @@ def gale_shapley(filename):
     #could do a queue cuz its first in first out and load preferences and dequeue them when they propose
     #Ex: {"hospital_0" : [0,2,1], "hospital_1" : [2,1,0]}
 
+
+
     hospital_prefs = {}
 
     result = []
@@ -130,7 +129,7 @@ def gale_shapley(filename):
 
     #Part 4 idea 2
     #Tyler- we could use the function below I modified from this if you think it'll work
-    student_prefs_2 = loadStudentPreferences(file,num_students)
+    student_prefs_2 = loadStudentPreferences(file,num_students,num_hospitals)
     
 
 
@@ -141,17 +140,18 @@ def gale_shapley(filename):
     propose_order = loadProposalOrder(num_hospitals)
     
     matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order)
-    #print_list = []
-    # for i in range(num_hospitals):
-    #     print(print_list.append(matches[i]))
-    # print(print_list)
-    print(matches)
-
+    #print(matches)
+    return_list = convertDictToList(matches)
+    print(return_list)
+    return return_list
 
 def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
     #propose order is queue
     #hostpital_prefs is dictonary of lists
     #student_prefs is dictonary of dictonaries
+    #{student_num: hospital}
+
+    #change matches to be 
     #matching alg
     matches = {}
 
@@ -166,16 +166,16 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
         
         
         #checks if s is unmatched
-        if student not in matches.values():
-            matches[hospital_num] = student
+        if student not in matches:
+            matches[student] = hospital_num
         
         #checks if s prefers h to current partner h'
         
-        elif student_prefs_2[student][hospital_num] < student_prefs_2[student][list(matches.keys())[list(matches.values()).index(student)]]:
-            booted_hosp = list(matches.keys())[list(matches.values()).index(student)]
+        elif student_prefs_2[student][hospital_num] < student_prefs_2[student][matches[student]]:
+            booted_hosp = matches[student]
             propose_order.enqueue(booted_hosp)
-            del matches[booted_hosp]
-            matches[hospital_num] = student
+            del matches[student]
+            matches[student] = hospital_num
         else:
             propose_order.enqueue(hospital_num)
         
@@ -228,7 +228,7 @@ def getMatchesMach1(hospital_prefs, student_prefs_2):
             i += 1
     return matches
 
-def loadStudentPreferences(file,num_students):
+def loadStudentPreferences(file,num_students, num_hospitals):
     """
     This function takes the file and num_student in as a paramter
     and then loads each students preference into
@@ -236,7 +236,15 @@ def loadStudentPreferences(file,num_students):
     student_num and the vals are a dictonary in which
     the keys are the hospitals num and it's ranking
     """
+    #preload for num students a dictonary of 0-num_students where key is hosp_num and val is 1
+    #when loading preferences del the key value pair so that any pair in the dict at the end of loop any val still in dict
+    #initialize in hospital_prefs as -1
     #{student_x : {hospital_x : 1, hospital_z : 2}}
+    unacceptable_dict = {}
+    for stu in range(num_students):
+        unacceptable_dict[stu] = {}
+        for hosp in range(num_hospitals):
+            unacceptable_dict[stu][hosp]=-1
     student_preferences = {}
     for student_num in range(num_students):
         next_line = file.readline().split()  
@@ -245,13 +253,25 @@ def loadStudentPreferences(file,num_students):
         student_preferences[student_num] = {}
         for hospital_num in next_line:
             hospital_num = int(hospital_num)
-            
-            
+            del unacceptable_dict[student_num][hospital_num]
             student_preferences[student_num][hospital_num] = ranking
             ranking+=1
+    for student in unacceptable_dict:
+        for hospital in unacceptable_dict[student]:
+            student_preferences[student][hospital] = -1
     
  
     return student_preferences
+
+def convertDictToList(matches):
+    return_list = []
+    # for i in range(num_hospitals):
+    #     print(print_list.append(matches[i]))
+    # print(print_list)
+    for i in range(len(matches)):
+        return_list.append(matches[i])
+    return return_list
+
 
 
 gale_shapley("input2.txt")

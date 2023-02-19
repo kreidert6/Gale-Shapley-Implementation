@@ -141,12 +141,10 @@ def gale_shapley(filename):
     propose_order = loadProposalOrder(num_hospitals)
     
     matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order)
-    #print_list = []
-    # for i in range(num_hospitals):
-    #     print(print_list.append(matches[i]))
-    # print(print_list)
-    print(matches)
 
+    return_list = convertDictToList(matches,num_hospitals)
+
+    return return_list
 
 def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
     #propose order is queue
@@ -252,6 +250,17 @@ def loadStudentPreferences(file,num_students):
     
  
     return student_preferences
+
+def convertDictToList(matches, num_hospitals):
+    return_list = []
+    # for i in range(num_hospitals):
+    #     print(print_list.append(matches[i]))
+    # print(print_list)
+    swapped_dict = {v: k for k, v in matches.items()}
+    for i in range(num_hospitals):
+        print(return_list.append(swapped_dict[i]))
+    return return_list
+
 
 
 gale_shapley("input2.txt")
