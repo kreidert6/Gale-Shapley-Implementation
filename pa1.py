@@ -5,7 +5,7 @@
 
 class Queue:
     class Node:
-        def __init__(self, value, next=None):
+        def __init__(self, value,next=None):
             self.value = value
             self.next = next
 
@@ -36,6 +36,8 @@ class Queue:
             return True
         else:
             return False
+    def getNumPositions(self):
+        return self.num_positions
 
 
 
@@ -82,7 +84,7 @@ def gale_shapley(filename):
     
     hospital_positions = {}
     for i in range(num_hospitals):
-        hospital_positions[i] = line2[i]
+        hospital_positions[i] = int(line2[i])
 
   
 
@@ -137,15 +139,15 @@ def gale_shapley(filename):
 
         
 
-    propose_order = loadProposalOrder(num_hospitals)
+    propose_order = loadProposalOrder(num_hospitals,hospital_positions)
     
-    matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order)
+    matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order,hospital_positions)
     #print(matches)
-    return_list = convertDictToList(matches)
+    return_list = convertDictToList(matches,num_students)
     #print(return_list)
     return return_list
 
-def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
+def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order,hospital_positions):
     #propose order is queue
     #hostpital_prefs is dictonary of lists
     #student_prefs is dictonary of dictonaries
@@ -159,36 +161,45 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
     #idea use a queue to keep track of hospitals who are proposing
     while (not propose_order.isEmpty()):
         hospital_num = propose_order.dequeue()
-
-        student = hospital_prefs[hospital_num].pop()
-
-        #grab the hospitals next preference
-        
-        
-        #checks if s is unmatched
-        if student not in matches:
-            matches[student] = hospital_num
-            
-        
-        #checks if s prefers h to current partner h'
-        
-        elif student_prefs_2[student][hospital_num] < student_prefs_2[student][matches[student]]:
-            booted_hosp = matches[student]
-            propose_order.enqueue(booted_hosp)
-            del matches[student]
-            matches[student] = hospital_num
+        if(len(hospital_prefs[hospital_num])==0):
+            continue
         else:
-            propose_order.enqueue(hospital_num)
-        
-        #student rejects
-        # creating a new dictionary
+            student = hospital_prefs[hospital_num].pop()
+
+            #grab the hospitals next preference
+            
+            
+            #checks if s is unmatched
+            if student not in matches:
+                matches[student] = hospital_num
+                # hospital_positions[hospital_num] -=1
+                # if(hospital_positions[hospital_num]!=0):
+                #     propose_order.enqueue(hospital_num)
+            
+            #checks if s prefers h to current partner h'
+            
+            elif student_prefs_2[student][hospital_num] < student_prefs_2[student][matches[student]]:
+                booted_hosp = matches[student]
+                propose_order.enqueue(booted_hosp)
+                # hospital_positions[booted_hosp]+=1
+                # hospital_positions[hospital_num]-=1
+                del matches[student]
+                matches[student] = hospital_num
+                # if(hospital_positions[hospital_num]!=0):
+                #     propose_order.enqueue(hospital_num)
+            else:
+                propose_order.enqueue(hospital_num)
+            
+            #student rejects
+            # creating a new dictionary
 
     return matches
 
-def loadProposalOrder(numHospitals):
+def loadProposalOrder(num_hospitals,hospital_positions):
     proposal_order = Queue()
-    for hosp_num in range(numHospitals):
-        proposal_order.enqueue(hosp_num)
+    for hosp_num in range(num_hospitals):
+        for i in range(hospital_positions[hosp_num]):
+            proposal_order.enqueue(hosp_num)
     return proposal_order
 
 
@@ -264,15 +275,16 @@ def loadStudentPreferences(file,num_students, num_hospitals):
  
     return student_preferences
 
-def convertDictToList(matches):
+def convertDictToList(matches,num_students):
     return_list = []
     # for i in range(num_hospitals):
     #     print(print_list.append(matches[i]))
     # print(print_list)
-    for i in range(len(matches)):
-        return_list.append(matches[i])
+    # for i in range(len(matches)):
+    for i in range(num_students):
+        if(i not in matches):
+            return_list.append(None)
+        else:
+            return_list.append(matches[i])
+        #return_list.append(matches[i])
     return return_list
-
-
-
-gale_shapley("input2.txt")

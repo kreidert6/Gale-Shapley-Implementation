@@ -161,35 +161,37 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order,hospital_posi
     #idea use a queue to keep track of hospitals who are proposing
     while (not propose_order.isEmpty()):
         hospital_num = propose_order.dequeue()
-
-        student = hospital_prefs[hospital_num].pop()
-
-        #grab the hospitals next preference
-        
-        
-        #checks if s is unmatched
-        if student not in matches:
-            matches[student] = hospital_num
-            # hospital_positions[hospital_num] -=1
-            # if(hospital_positions[hospital_num]!=0):
-            #     propose_order.enqueue(hospital_num)
-        
-        #checks if s prefers h to current partner h'
-        
-        elif student_prefs_2[student][hospital_num] < student_prefs_2[student][matches[student]]:
-            booted_hosp = matches[student]
-            propose_order.enqueue(booted_hosp)
-            # hospital_positions[booted_hosp]+=1
-            # hospital_positions[hospital_num]-=1
-            del matches[student]
-            matches[student] = hospital_num
-            # if(hospital_positions[hospital_num]!=0):
-            #     propose_order.enqueue(hospital_num)
+        if(len(hospital_prefs[hospital_num])==0):
+            continue
         else:
-            propose_order.enqueue(hospital_num)
-        
-        #student rejects
-        # creating a new dictionary
+            student = hospital_prefs[hospital_num].pop()
+
+            #grab the hospitals next preference
+            
+            
+            #checks if s is unmatched
+            if student not in matches:
+                matches[student] = hospital_num
+                # hospital_positions[hospital_num] -=1
+                # if(hospital_positions[hospital_num]!=0):
+                #     propose_order.enqueue(hospital_num)
+            
+            #checks if s prefers h to current partner h'
+            
+            elif student_prefs_2[student][hospital_num] < student_prefs_2[student][matches[student]]:
+                booted_hosp = matches[student]
+                propose_order.enqueue(booted_hosp)
+                # hospital_positions[booted_hosp]+=1
+                # hospital_positions[hospital_num]-=1
+                del matches[student]
+                matches[student] = hospital_num
+                # if(hospital_positions[hospital_num]!=0):
+                #     propose_order.enqueue(hospital_num)
+            else:
+                propose_order.enqueue(hospital_num)
+            
+            #student rejects
+            # creating a new dictionary
 
     return matches
 
@@ -281,20 +283,25 @@ def convertDictToList(matches,num_students):
     # for i in range(len(matches)):
     for i in range(num_students):
         if(i not in matches):
-            return_list.append("None")
+            return_list.append(None)
         else:
-            return_list.append(str(matches[i]))
+            return_list.append(matches[i])
         #return_list.append(matches[i])
     return return_list
 
 
 
-my_list = gale_shapley("input17.txt")
-file = open("solution17.txt", 'r')
-solution_list = file.readline().split()
+
+
+
+
+
+my_list = gale_shapley("input18.txt")
+file = open("solution18.txt", 'r')
+solution_list_string = file.readline().split()
 
 print(my_list)
-#solution_list = [int(i) for i in solution_list_string]
+solution_list = [int(i) for i in solution_list_string]
 print(solution_list)
 if(my_list==solution_list):
     print("The lists are equal")
