@@ -5,7 +5,7 @@
 
 class Queue:
     class Node:
-        def __init__(self, value, next=None):
+        def __init__(self, value,next=None):
             self.value = value
             self.next = next
 
@@ -36,6 +36,8 @@ class Queue:
             return True
         else:
             return False
+    def getNumPositions(self):
+        return self.num_positions
 
 
 
@@ -137,15 +139,15 @@ def gale_shapley(filename):
 
         
 
-    propose_order = loadProposalOrder(num_hospitals)
+    propose_order = loadProposalOrder(num_hospitals,hospital_positions)
     
-    matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order)
+    matches = getMatchesMach2(hospital_prefs,student_prefs_2,propose_order,hospital_positions)
     #print(matches)
     return_list = convertDictToList(matches)
-    print(return_list)
+    #print(return_list)
     return return_list
 
-def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
+def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order,hospital_positions):
     #propose order is queue
     #hostpital_prefs is dictonary of lists
     #student_prefs is dictonary of dictonaries
@@ -184,9 +186,9 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
 
     return matches
 
-def loadProposalOrder(numHospitals):
+def loadProposalOrder(num_hospitals):
     proposal_order = Queue()
-    for hosp_num in range(numHospitals):
+    for hosp_num in range(num_hospitals):
         proposal_order.enqueue(hosp_num)
     return proposal_order
 
@@ -274,4 +276,15 @@ def convertDictToList(matches):
 
 
 
-gale_shapley("input2.txt")
+my_list = gale_shapley("input5.txt")
+file = open("solution5.txt", 'r')
+solution_list_string = file.readline().split()
+solution_list = [int(i) for i in solution_list_string]
+print(my_list)
+print(solution_list)
+if(my_list==solution_list):
+    print("The lists are equal")
+else:
+    print("The lists are not equal")
+
+
