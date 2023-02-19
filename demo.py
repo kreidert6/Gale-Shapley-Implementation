@@ -84,7 +84,7 @@ def gale_shapley(filename):
     
     hospital_positions = {}
     for i in range(num_hospitals):
-        hospital_positions[i] = line2[i]
+        hospital_positions[i] = int(line2[i])
 
   
 
@@ -170,14 +170,21 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order,hospital_posi
         #checks if s is unmatched
         if student not in matches:
             matches[student] = hospital_num
+            # hospital_positions[hospital_num] -=1
+            # if(hospital_positions[hospital_num]!=0):
+            #     propose_order.enqueue(hospital_num)
         
         #checks if s prefers h to current partner h'
         
         elif student_prefs_2[student][hospital_num] < student_prefs_2[student][matches[student]]:
             booted_hosp = matches[student]
             propose_order.enqueue(booted_hosp)
+            # hospital_positions[booted_hosp]+=1
+            # hospital_positions[hospital_num]-=1
             del matches[student]
             matches[student] = hospital_num
+            # if(hospital_positions[hospital_num]!=0):
+            #     propose_order.enqueue(hospital_num)
         else:
             propose_order.enqueue(hospital_num)
         
@@ -186,10 +193,11 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order,hospital_posi
 
     return matches
 
-def loadProposalOrder(num_hospitals):
+def loadProposalOrder(num_hospitals,hospital_positions):
     proposal_order = Queue()
     for hosp_num in range(num_hospitals):
-        proposal_order.enqueue(hosp_num)
+        for i in range(hospital_positions[hosp_num]):
+            proposal_order.enqueue(hosp_num)
     return proposal_order
 
 
@@ -271,16 +279,21 @@ def convertDictToList(matches):
     #     print(print_list.append(matches[i]))
     # print(print_list)
     for i in range(len(matches)):
+        # if(i not in matches):
+        #     return_list.append(None)
+        # else:
+        #     return_list.append(matches[i])
         return_list.append(matches[i])
     return return_list
 
 
 
-my_list = gale_shapley("input5.txt")
-file = open("solution5.txt", 'r')
+my_list = gale_shapley("input9.txt")
+file = open("solution9.txt", 'r')
 solution_list_string = file.readline().split()
-solution_list = [int(i) for i in solution_list_string]
+
 print(my_list)
+solution_list = [int(i) for i in solution_list_string]
 print(solution_list)
 if(my_list==solution_list):
     print("The lists are equal")

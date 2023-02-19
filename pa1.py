@@ -168,6 +168,7 @@ def getMatchesMach2(hospital_prefs, student_prefs_2, propose_order):
         #checks if s is unmatched
         if student not in matches:
             matches[student] = hospital_num
+            
         
         #checks if s prefers h to current partner h'
         
