@@ -1,0 +1,4 @@
+Grading:
+Total Deductions: 0
+Final Score: 100
+  Your program can be incorrect or crash when students find some hospitals unacceptable.  (I neglected to add tests for this case, so no points off.)
